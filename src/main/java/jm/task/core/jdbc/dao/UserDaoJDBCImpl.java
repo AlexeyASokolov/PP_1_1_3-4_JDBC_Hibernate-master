@@ -3,40 +3,36 @@ package jm.task.core.jdbc.dao;
 import jm.task.core.jdbc.model.User;
 import jm.task.core.jdbc.util.Util;
 
-import javax.persistence.Column;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class UserDaoJDBCImpl extends Util implements UserDao {
-    Connection connection = getConnection();
+public class UserDaoJDBCImpl implements UserDao {
+    private Connection conn = Util.getConnection();
+
 
     public UserDaoJDBCImpl() {
-
     }
 
+
     public void createUsersTable() {
-        String createTableSQL = "CREATE TABLE users ("
-                + "id BIGINT() PRIMARY KEY AUTO_INCREMENT UNIQUE NOT NULL,"
-                + "name VARCHAR() NOT NULL," + "lastName VARCHAR() NOT NULL," + "age INT() NOT NULL)";
-        try (Statement statement = connection.createStatement()) {
+        String createTableSQL = "CREATE TABLE IF NOT EXISTS users ("
+                + "id BIGINT PRIMARY KEY AUTO_INCREMENT NOT NULL,"
+                + "name VARCHAR(64) NOT NULL," + "lastName VARCHAR(64) NOT NULL," + "age INT NOT NULL)";
+        try (PreparedStatement statement = conn.prepareStatement(createTableSQL)) {
             statement.executeUpdate(createTableSQL);
         } catch (Exception ex) {
-            System.out.println("Сбой соединения с базой данных");
             System.out.println(ex);
         }
 
     }
 
 
-
     public void dropUsersTable() {
-        String dropTableSQL = "TRUNCATE users";
-        try (Connection conn = Util.getConnection()) {
-            Statement statement = conn.createStatement();
+        String dropTableSQL = "DROP TABLE IF EXISTS users";
+        try (PreparedStatement statement = conn.prepareStatement(dropTableSQL);) {
             statement.executeUpdate(dropTableSQL);
         } catch (Exception ex) {
-            System.out.println("Сбой соединения с базой данных");
             System.out.println(ex);
         }
 
@@ -46,19 +42,16 @@ public class UserDaoJDBCImpl extends Util implements UserDao {
     @Override
     public void saveUser(String name, String lastName, byte age) {
         String saveUserSQL = "INSERT INTO users (name, lastName, age) VALUES (?, ?, ?)";
-        try (Connection conn = Util.getConnection();
-             PreparedStatement preparedStatement = conn.prepareStatement(saveUserSQL)) {
+        try (PreparedStatement preparedStatement = conn.prepareStatement(saveUserSQL)) {
 
             preparedStatement.setString(1, name);
             preparedStatement.setString(2, lastName);
             preparedStatement.setByte(3, age);
 
             preparedStatement.executeUpdate();
-
-            System.out.println("Пользователь успешно добавлен!");
+            System.out.printf("User с именем – %s добавлен в базу данных \n", name);
 
         } catch (SQLException ex) {
-            System.out.println("Сбой соединения с базой данных");
             ex.printStackTrace();
         }
     }
@@ -66,16 +59,10 @@ public class UserDaoJDBCImpl extends Util implements UserDao {
     @Override
     public void removeUserById(long id) {
         String saveUserSQL = "delete from users where id= ?";
-        try (Connection conn = Util.getConnection();
-             PreparedStatement preparedStatement = conn.prepareStatement(saveUserSQL)) {
+        try (PreparedStatement preparedStatement = conn.prepareStatement(saveUserSQL)) {
             preparedStatement.setLong(1, id);
-
             preparedStatement.executeUpdate();
-
-            System.out.println("Пользователь удален.");
-
         } catch (SQLException ex) {
-            System.out.println("Сбой соединения с базой данных.");
             ex.printStackTrace();
         }
     }
@@ -85,9 +72,9 @@ public class UserDaoJDBCImpl extends Util implements UserDao {
         List<User> userList = new ArrayList<>();
         String selectAllUsersSQL = "SELECT * FROM users";
 
-        try (Connection conn = Util.getConnection();
-             PreparedStatement preparedStatement = conn.prepareStatement(selectAllUsersSQL);
-             ResultSet resultSet = preparedStatement.executeQuery()) {
+        try (PreparedStatement preparedStatement = conn.prepareStatement(selectAllUsersSQL)) {
+
+            ResultSet resultSet = preparedStatement.executeQuery();
 
             while (resultSet.next()) {
                 String name = resultSet.getString("name");
@@ -99,21 +86,16 @@ public class UserDaoJDBCImpl extends Util implements UserDao {
             }
 
         } catch (SQLException ex) {
-            System.out.println("Сбой соединения с базой данных.");
             ex.printStackTrace();
         }
         return userList;
     }
 
     public void cleanUsersTable() {
-        List<User> userList = new ArrayList<>();
-        String selectAllUsersSQL = "DELETE FROM users";
-
-        try (Connection conn = Util.getConnection()) {
-            Statement statement = conn.createStatement();
+        String selectAllUsersSQL = "TRUNCATE TABLE users";
+        try (PreparedStatement statement = conn.prepareStatement(selectAllUsersSQL)) {
             statement.executeUpdate(selectAllUsersSQL);
         } catch (SQLException ex) {
-            System.out.println("Сбой соединения с базой данных.");
             ex.printStackTrace();
         }
     }

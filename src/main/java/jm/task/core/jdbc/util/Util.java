@@ -11,10 +11,10 @@ public class Util {
     private final static String USERNAME = "root";
     private final static String PASSWORD = "root";
 
+
     public static Connection getConnection() {
         try {
             Connection connection = DriverManager.getConnection(URL, USERNAME, PASSWORD);
-            System.out.println("Соединение с базой данных успешно установлено!");
             return connection;
         } catch (SQLException e) {
             e.printStackTrace();
