@@ -29,6 +29,9 @@ public class UserServiceImpl implements UserService {
     }
 
     public List<User> getAllUsers() {
+        for (int i = 0; i < userDaoHibernate.getAllUsers().size() ; i++) {
+            System.out.println(userDaoHibernate.getAllUsers().get(i));
+        }
         return userDaoHibernate.getAllUsers();
     }
 
