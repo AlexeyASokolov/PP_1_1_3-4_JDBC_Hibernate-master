@@ -16,9 +16,10 @@ public class UserDaoJDBCImpl implements UserDao {
 
 
     public void createUsersTable() {
-        String createTableSQL = "CREATE TABLE IF NOT EXISTS users ("
-                + "id INTEGER AUTO_INCREMENT PRIMARY KEY NOT NULL,"
-                + "name VARCHAR(64) NOT NULL," + "lastName VARCHAR(64) NOT NULL," + "age INT NOT NULL)";
+        String createTableSQL = """
+                    CREATE TABLE IF NOT EXISTS users (id INTEGER PRIMARY KEY AUTO_INCREMENT,
+                    name VARCHAR(64) NOT NULL,  
+                    lastName VARCHAR(64) NOT NULL, age INT NOT NULL)""";
         try (PreparedStatement statement = conn.prepareStatement(createTableSQL)) {
             statement.executeUpdate(createTableSQL);
         } catch (Exception ex) {
@@ -70,22 +71,23 @@ public class UserDaoJDBCImpl implements UserDao {
     @Override
     public List<User> getAllUsers() {
         List<User> userList = new ArrayList<>();
-        String selectAllUsersSQL = "SELECT * FROM users";
+        String selectAllUsersSQL = "SELECT id, name, lastName, age FROM `users`";
 
         try (PreparedStatement preparedStatement = conn.prepareStatement(selectAllUsersSQL)) {
 
             ResultSet resultSet = preparedStatement.executeQuery();
 
             while (resultSet.next()) {
+                long id = resultSet.getLong("id");
                 String name = resultSet.getString("name");
                 String lastName = resultSet.getString("lastName");
                 byte age = resultSet.getByte("age");
-
-                User user = new User(name, lastName, age);
+                User user = new User(id, name, lastName, age);
                 userList.add(user);
-                System.out.println(user);
             }
-
+            for (int i = 0; i < userList.size() ; i++) {
+                System.out.println(userList.get(i));
+            }
         } catch (SQLException ex) {
             ex.printStackTrace();
         }
