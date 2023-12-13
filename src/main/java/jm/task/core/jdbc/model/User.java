@@ -8,19 +8,10 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 
 
-
 @Entity
 @Table(name = "users")
 public class User {
-    @Override
-    public String toString() {
-        return "User{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", lastName='" + lastName + '\'' +
-                ", age=" + age +
-                '}';
-    }
+
 
     @Id
     @Column(name = "id")
@@ -82,5 +73,15 @@ public class User {
 
     public void setAge(Byte age) {
         this.age = age;
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", age=" + age +
+                '}';
     }
 }

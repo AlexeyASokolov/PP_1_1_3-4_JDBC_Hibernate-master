@@ -28,6 +28,7 @@ public class Main {
         userService.saveUser("Lupa", "Pupov", ( byte) 96);
         userService.removeUserById(3);
         userService.getAllUsers();
+        System.out.println(userService.getAllUsers());
         userService.cleanUsersTable();
         userService.dropUsersTable();
     }
