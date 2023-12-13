@@ -13,7 +13,7 @@ import java.util.List;
 import static java.sql.DriverManager.getConnection;
 
 public class UserDaoHibernateImpl implements UserDao {
-    SessionFactory sessionFactory = Util.getSessionFactory();
+    private SessionFactory sessionFactory = Util.getSessionFactory();
 
 
     public UserDaoHibernateImpl() {
