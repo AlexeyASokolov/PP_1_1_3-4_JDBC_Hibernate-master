@@ -1038,7 +1038,7 @@ sys|schema||mysql.sys|localhost|TRIGGER|G</Grants>
     </schema>
     <schema id="292" parent="1" name="mydbtest">
       <Current>1</Current>
-      <LastIntrospectionLocalTimestamp>2023-12-09.08:13:36</LastIntrospectionLocalTimestamp>
+      <LastIntrospectionLocalTimestamp>2023-12-13.10:22:13</LastIntrospectionLocalTimestamp>
       <CollationName>utf8mb3_general_ci</CollationName>
     </schema>
     <user id="293" parent="1" name="rooot">
@@ -1074,12 +1074,12 @@ sys|schema||mysql.sys|localhost|TRIGGER|G</Grants>
       <Position>1</Position>
     </column>
     <column id="300" parent="298" name="name">
-      <DasType>varchar(255)|0s</DasType>
+      <DasType>varchar(64)|0s</DasType>
       <NotNull>1</NotNull>
       <Position>2</Position>
     </column>
     <column id="301" parent="298" name="lastName">
-      <DasType>varchar(255)|0s</DasType>
+      <DasType>varchar(64)|0s</DasType>
       <NotNull>1</NotNull>
       <Position>3</Position>
     </column>

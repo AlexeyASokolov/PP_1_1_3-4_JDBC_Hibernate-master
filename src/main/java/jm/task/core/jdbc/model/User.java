@@ -8,24 +8,13 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 
 
-
 @Entity
 @Table(name = "users")
 public class User {
-    @Override
-    public String toString() {
-        return "User{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", lastName='" + lastName + '\'' +
-                ", age=" + age +
-                '}';
-    }
-
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private long id;
 
     @Column(name = "name")
     private String name;
@@ -82,5 +71,15 @@ public class User {
 
     public void setAge(Byte age) {
         this.age = age;
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+               "id=" + id +
+               ", name='" + name + '\'' +
+               ", lastName='" + lastName + '\'' +
+               ", age=" + age +
+               '}';
     }
 }
